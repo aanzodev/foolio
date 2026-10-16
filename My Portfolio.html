@@ -115,5 +115,30 @@ a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px}
   bar.onclick=function(e){ if(au.duration){var r=bar.getBoundingClientRect();au.currentTime=(e.clientX-r.left)/r.width*au.duration;} };
 })();
 </script>
+<script>
+/* ===== PUT YOUR DISCORD USER ID HERE ===== */
+const DISCORD_ID = '1387162307385233408';
+
+const colors = {online:'#3ba55d', idle:'#faa81a', dnd:'#ed4245', offline:'#8a8a98'};
+async function updateStatus(){
+  if(DISCORD_ID === '1387162307385233408') return;
+  try{
+    const r = await fetch('https://api.lanyard.rest/v1/users/' + DISCORD_ID);
+    const {data} = await r.json();
+    const u = data.discord_user;
+    const av = document.querySelector('.av');
+    if(u.avatar){
+      av.style.background = 'url(https://cdn.discordapp.com/avatars/'+u.id+'/'+u.avatar+'.png?size=128) center/cover';
+      av.firstChild.textContent = '';
+    }
+    document.querySelector('.nm').firstChild.textContent = u.username + ' ';
+    document.querySelector('.av i').style.background = colors[data.discord_status];
+    const act = data.activities.find(a => a.type !== 4);
+    document.querySelector('.seen').textContent = act ? 'playing ' + act.name : data.discord_status;
+  }catch(e){}
+}
+updateStatus();
+setInterval(updateStatus, 30000);
+</script>
 </body>
 </html>
