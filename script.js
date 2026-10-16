@@ -13,7 +13,8 @@
   au.ontimeupdate=function(){cur.textContent=f(au.currentTime);fill.style.width=(au.currentTime/au.duration*100||0)+'%'};
   bar.onclick=function(e){ if(au.duration){var r=bar.getBoundingClientRect();au.currentTime=(e.clientX-r.left)/r.width*au.duration;} };
 })();
-const COUNTER_NAME = 'Anzos file';
+/* ===== VIEW COUNTER: change this to something unique to you ===== */
+const COUNTER_NAME = 'yourname-portfolio';
 (async function(){
   try{
     const r = await fetch('https://abacus.jasoncameron.dev/hit/' + COUNTER_NAME + '/views');
@@ -22,11 +23,12 @@ const COUNTER_NAME = 'Anzos file';
   }catch(e){}
 })();
 
+/* ===== PUT YOUR DISCORD USER ID HERE ===== */
 const DISCORD_ID = '1387162307385233408';
 
 const colors = {online:'#3ba55d', idle:'#faa81a', dnd:'#ed4245', offline:'#8a8a98'};
 async function updateStatus(){
-  if(DISCORD_ID === '1387162307385233408') return;
+  if(!DISCORD_ID) return;
   try{
     const r = await fetch('https://api.lanyard.rest/v1/users/' + DISCORD_ID);
     const {data} = await r.json();
