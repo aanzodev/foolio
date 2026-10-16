@@ -13,17 +13,18 @@
   au.ontimeupdate=function(){cur.textContent=f(au.currentTime);fill.style.width=(au.currentTime/au.duration*100||0)+'%'};
   bar.onclick=function(e){ if(au.duration){var r=bar.getBoundingClientRect();au.currentTime=(e.clientX-r.left)/r.width*au.duration;} };
 })();
-/* ===== VIEW COUNTER: change this to something unique to you ===== */
 const COUNTER_NAME = 'yourname-portfolio';
 (async function(){
   try{
-    const r = await fetch('https://abacus.jasoncameron.dev/hit/' + COUNTER_NAME + '/views');
+    let seen = false;
+    try{ seen = localStorage.getItem('counted_' + COUNTER_NAME) === '1'; }catch(e){}
+    const r = await fetch('https://abacus.jasoncameron.dev/' + (seen ? 'get/' : 'hit/') + COUNTER_NAME + '/views');
     const d = await r.json();
     document.getElementById('views').textContent = d.value;
+    if(!seen){ try{ localStorage.setItem('counted_' + COUNTER_NAME, '1'); }catch(e){} }
   }catch(e){}
 })();
 
-/* ===== PUT YOUR DISCORD USER ID HERE ===== */
 const DISCORD_ID = '1387162307385233408';
 
 const colors = {online:'#3ba55d', idle:'#faa81a', dnd:'#ed4245', offline:'#8a8a98'};
